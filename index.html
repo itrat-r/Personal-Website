@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Itrat Rubab · Data Analyst</title>
+  <meta name="description" content="Portfolio of Itrat Rubab, data analyst with 3.5 years of experience in ETL pipelines, SQL, Python, MongoDB and dashboards.">
+  <meta property="og:title" content="Itrat Rubab · Data Analyst">
+  <meta property="og:description" content="I turn messy data into pipelines, dashboards and decisions.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%231f4e8c'/><text x='50' y='68' font-size='56' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'>IR</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <a href="#top" class="logo" aria-label="Itrat Rubab, home">IR<span>.</span></a>
+    <nav aria-label="Main">
+      <a href="#impact">Impact</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button id="theme" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-text">
+        <p class="eyebrow"><span class="dot"></span> Open to data analyst roles · Germany</p>
+        <h1>Hi, I'm <span class="hl">Itrat</span>.<br>I turn messy data into <span class="typed-wrap"><span id="typed"></span><span class="caret"></span></span></h1>
+        <p class="lead">Data analyst with 3.5 years in data integration and pipeline development, backed by an M.Sc. in Bioinformatics. I build the ETL, write the queries and ship the dashboards, so teams stop copy-pasting into Excel.</p>
+        <div class="cta">
+          <a class="btn primary" href="#projects">See my projects →</a>
+          <a class="btn" href="assets/Itrat_Rubab_CV.pdf" download>Download CV</a>
+        </div>
+        <ul class="badges">
+          <li>🇩🇪 Permanent Resident</li>
+          <li>English · fluent</li>
+          <li>Deutsch · B2</li>
+        </ul>
+      </div>
+
+      <figure class="pipeline" aria-label="Diagram of a typical data pipeline I build: sources to n8n to AWS S3 to MongoDB to dashboard">
+        <svg viewBox="0 0 360 400" role="img" aria-hidden="true">
+          <defs>
+            <path id="p1" d="M180 62 V120"/>
+            <path id="p2" d="M180 168 V226"/>
+            <path id="p3" d="M180 274 V332"/>
+          </defs>
+          <g class="node" transform="translate(40,10)"><rect width="280" height="52" rx="14"/><text x="140" y="32">OneDrive · APIs · on-prem</text></g>
+          <g class="node accent" transform="translate(40,120)"><rect width="280" height="48" rx="14"/><text x="140" y="30">n8n · scheduled ETL</text></g>
+          <g class="node" transform="translate(40,226)"><rect width="280" height="48" rx="14"/><text x="140" y="30">AWS S3 · encrypted</text></g>
+          <g class="node" transform="translate(40,332)"><rect width="280" height="48" rx="14"/><text x="140" y="30">MongoDB · aggregations</text></g>
+          <use href="#p1" class="wire"/><use href="#p2" class="wire"/><use href="#p3" class="wire"/>
+          <g class="flow">
+            <circle r="5"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+            <circle r="5"><animateMotion dur="1.6s" begin=".5s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+            <circle r="5"><animateMotion dur="1.6s" begin="1s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+          </g>
+        </svg>
+        <figcaption>The shape of most things I build: <em>sources → pipeline → storage → insight</em>.</figcaption>
+      </figure>
+    </section>
+
+    <!-- IMPACT -->
+    <section id="impact" class="section">
+      <h2 class="sec-title"><span>01</span> Impact, in numbers</h2>
+      <div class="stats">
+        <div class="stat"><b data-count="3.5" data-dec="1">0</b><i>years</i><p>in data integration &amp; pipeline development</p></div>
+        <div class="stat"><b data-count="500" data-suffix="+">0</b><p>daily uploads processed with MongoDB aggregation pipelines</p></div>
+        <div class="stat"><b data-count="70" data-suffix="%">0</b><p>fewer workflow failures after translating business needs into integration requirements</p></div>
+        <div class="stat"><b data-count="5" data-suffix=" h">0</b><p>of manual data handling saved every week by automated ETL</p></div>
+        <div class="stat"><b data-count="60" data-suffix="%">0</b><p>higher feature adoption after usability and A/B testing</p></div>
+        <div class="stat"><b data-count="50" data-suffix="+">0</b><p>participants in usability tests that shaped design decisions</p></div>
+      </div>
+
+      <div class="console" id="console">
+        <div class="console-bar"><span></span><span></span><span></span><em>query.sql</em></div>
+        <pre><code><span class="k">SELECT</span> what_i_delivered
+<span class="k">FROM</span>   experience
+<span class="k">WHERE</span>  company = <span class="s">'Contexxt.ai'</span>
+<span class="k">ORDER BY</span> impact <span class="k">DESC</span>;</code></pre>
+        <button class="btn small" id="run">▶ Run query</button>
+        <ol class="results" id="results" hidden>
+          <li>Scheduled ETL (n8n) from OneDrive &amp; on-prem into encrypted AWS S3 for 3 enterprise clients</li>
+          <li>MongoDB pipelines keeping 500+ daily uploads clean and queryable</li>
+          <li>React + MUI dashboards replacing manual Excel reports with live KPIs</li>
+          <li>70% fewer workflow failures through tighter requirements with product &amp; sales</li>
+        </ol>
+        <p class="rows" id="rows" hidden>4 rows returned in 0.02 s</p>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <h2 class="sec-title"><span>02</span> Data projects</h2>
+      <p class="sec-sub">Hands-on work I can walk you through. Filter by tool, click a card for the story.</p>
+      <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section">
+      <h2 class="sec-title"><span>03</span> Experience</h2>
+      <ol class="timeline">
+        <li>
+          <div class="when">03/2023 – 12/2025</div>
+          <div class="card">
+            <h3>Data Analyst | Software Developer</h3>
+            <p class="org">Contexxt.ai · Saarbrücken</p>
+            <ul>
+              <li>Designed and automated scheduled ETL pipelines (n8n) integrating cloud (OneDrive) and on-premise sources into AWS S3 for 3 enterprise clients, with encryption, saving ~5 hours per week.</li>
+              <li>Wrote MongoDB queries and aggregation pipelines for 500+ daily uploads, powering product features and internal reports.</li>
+              <li>Built dashboards in TypeScript, React and MUI that turned raw datasets into usage metrics and KPIs, replacing manual Excel reports.</li>
+              <li>Partnered with product and sales to turn business needs into integration requirements, reducing workflow failures by 70%.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="when">03/2022 – 02/2023</div>
+          <div class="card">
+            <h3>Front-end Developer | UI-UX Designer</h3>
+            <p class="org">IT Inkubator GmbH · Saarbrücken</p>
+            <ul>
+              <li>Designed and built a cross-platform health app for an enterprise client (React Native, Ionic, Figma) in an agile team.</li>
+              <li>Ran usability tests with 50+ participants and A/B tested the diet plan feature, improving feature adoption by 60%.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="when">03/2021 – 02/2022</div>
+          <div class="card">
+            <h3>Research Assistant</h3>
+            <p class="org">Bonn University · Bonn</p>
+            <ul>
+              <li>Ran experiments with 30+ participants to collect and annotate human movement data for training detection models.</li>
+              <li>Built Python (Pandas) cleaning pipelines to turn 1,000+ raw movement images into model-ready datasets.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="when">04/2017 – 02/2021</div>
+          <div class="card">
+            <h3>Student Research Assistant</h3>
+            <p class="org">Max Planck Institute for Informatics · Saarbrücken</p>
+            <ul>
+              <li>Developed interactive visualization tools and scientific web apps (JavaScript, React, Python) so researchers could explore computer vision datasets.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+
+      <div class="edu">
+        <div class="card"><h3>M.Sc. Bioinformatics</h3><p class="org">Saarland University, Germany · 2016 – 2021</p></div>
+        <div class="card"><h3>B.Sc. Bioinformatics</h3><p class="org">COMSATS University, Pakistan · 2011 – 2015</p></div>
+        <div class="card"><h3>Google Data Analytics Certificate</h3><p class="org">Coursera · in progress, expected 12/2026 · SQL (BigQuery), Tableau, R</p></div>
+        <div class="card"><h3>Deutsch für Beruf B2</h3><p class="org">01/2026 – 08/2026 · business German</p></div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+      <h2 class="sec-title"><span>04</span> Toolbox</h2>
+      <div class="skills">
+        <div><h3>Data engineering &amp; analytics</h3>
+          <p class="chips"><span>Python (Pandas)</span><span>SQL</span><span>Excel</span><span>AWS S3</span><span>MongoDB / NoSQL</span><span>A/B testing</span><span>REST APIs</span><span>n8n</span></p></div>
+        <div><h3>BI &amp; visualization</h3>
+          <p class="chips"><span>Power BI</span><span>Tableau</span><span>Dashboard development</span></p></div>
+        <div><h3>Development &amp; process</h3>
+          <p class="chips"><span>TypeScript</span><span>JavaScript</span><span>React</span><span>Node.js</span><span>Git</span><span>GitLab</span></p></div>
+        <div><h3>Languages</h3>
+          <p class="chips"><span>English (fluent)</span><span>German (B2)</span></p></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section contact">
+      <h2>Have a data problem that needs a pipeline?</h2>
+      <p>Let's talk. I reply fast, in English or German.</p>
+      <div class="cta center">
+        <a class="btn primary" href="mailto:itrat.r16@gmail.com">itrat.r16@gmail.com</a>
+        <a class="btn" href="https://linkedin.com/in/itratrubab" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/itrat-r" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Itrat Rubab · Built with plain HTML, CSS &amp; JS · Hosted on GitHub Pages</p>
+  </footer>
+
+  <script src="js/projects.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
