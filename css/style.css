@@ -126,24 +126,6 @@ h1 { font-size: clamp(38px, 6vw, 66px); font-weight: 800; letter-spacing: -.02em
 .rows { margin: 12px 0 0; color: #7f8da6; font-size: 13px; }
 @keyframes rise { to { opacity: 1; transform: none; } }
 
-/* projects */
-.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-.filters button { font: 500 14px "JetBrains Mono", monospace; padding: 6px 14px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
-.filters button[aria-pressed="true"] { background: var(--brand); color: var(--bg); border-color: var(--brand); }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-.proj { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
-.proj:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-.proj .thumb { height: 150px; display: grid; place-items: center; font-size: 54px; background: linear-gradient(135deg, var(--c1), var(--c2)); position: relative; }
-.proj .status { position: absolute; top: 12px; right: 12px; font: 500 11px "JetBrains Mono", monospace; background: rgba(0,0,0,.55); color: #fff; padding: 3px 10px; border-radius: 99px; }
-.proj .body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.proj h3 { font-size: 21px; }
-.proj p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
-.proj .result { color: var(--ink); font-weight: 500; border-left: 3px solid var(--good); padding-left: 10px; }
-.proj .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
-.proj .tags span { font: 400 12px "JetBrains Mono", monospace; background: var(--brand-soft); color: var(--brand); padding: 2px 9px; border-radius: 6px; }
-.proj .links { display: flex; gap: 16px; font-weight: 600; font-size: 14px; }
-.proj .links a { color: var(--accent); }
-
 /* timeline */
 .timeline { list-style: none; margin: 28px 0 40px; padding: 0 0 0 26px; border-left: 3px dashed var(--line); }
 .timeline li { position: relative; margin-bottom: 24px; }
@@ -185,4 +167,4 @@ footer p { margin: 0; }
   .reveal { opacity: 1; transform: none; }
   .flow { display: none; }
 }
-@media print { .nav, .pipeline, .console, .filters { display: none; } body { background: #fff; } }
+@media print { .nav, .pipeline, .console { display: none; } body { background: #fff; } }

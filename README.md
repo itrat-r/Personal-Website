@@ -4,10 +4,9 @@ Static portfolio site (HTML, CSS, vanilla JS, no build step) for GitHub Pages.
 
 ## Customize
 
-1. **Projects** – edit `js/projects.js`. The five entries are placeholders; replace them with real projects and set `draft: false`.
-2. **CV download** – put your PDF at `assets/Itrat_Rubab_CV.pdf` (create the `assets` folder).
-3. **GitHub link** – in `index.html`, replace `YOUR-GITHUB-USERNAME`.
-4. **Colors** – CSS variables at the top of `css/style.css`.
+1. **CV download** – put your PDF at `assets/Itrat_Rubab_CV.pdf` (create the `assets` folder).
+2. **GitHub link** – in `index.html`, replace `YOUR-GITHUB-USERNAME`.
+3. **Colors** – CSS variables at the top of `css/style.css`.
 
 ## Preview locally
 
