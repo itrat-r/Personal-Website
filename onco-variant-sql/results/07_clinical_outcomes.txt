@@ -1,0 +1,117 @@
+-- =====================================================================
+-- 07_clinical_outcomes.sql
+-- Q: Do genomic features relate to clinical variables and survival?
+-- =====================================================================
+
+-- 1. LUAD: EGFR mutations are enriched in never-smokers, KRAS in smokers;
+--    smokers carry a much higher mutational burden
+SELECT CASE WHEN t.smoking_status = 'Never' THEN 'Never smoker'
+            ELSE 'Ever smoker' END AS smoking_group,
+       COUNT(*) AS n,
+       ROUND(100.0 * AVG(egfr.is_mutated), 1) AS pct_egfr_mut,
+       ROUND(100.0 * AVG(kras.is_mutated), 1) AS pct_kras_mut,
+       ROUND(AVG(t.tmb_per_mb), 1)            AS mean_tmb
+FROM v_tmb t
+JOIN v_sample_gene_status egfr ON egfr.sample_id = t.sample_id AND egfr.gene_symbol = 'EGFR'
+JOIN v_sample_gene_status kras ON kras.sample_id = t.sample_id AND kras.gene_symbol = 'KRAS'
+WHERE t.cancer_type = 'LUAD' AND t.smoking_status IS NOT NULL
+GROUP BY smoking_group;
+smoking_group  n    pct_egfr_mut  pct_kras_mut  mean_tmb
+-------------  ---  ------------  ------------  --------
+Ever smoker    147  8.2           33.3          7.8     
+Never smoker   33   36.4          9.1           0.8     
+
+-- 2. Crude mortality rate (deaths per 100 person-years) by TP53 status,
+--    stratified by cancer type
+SELECT s.cancer_type,
+       CASE tp53.is_mutated WHEN 1 THEN 'TP53 mutant' ELSE 'TP53 wild-type' END AS tp53_status,
+       COUNT(*)                                            AS n,
+       SUM(p.vital_status = 'Deceased')                    AS deaths,
+       ROUND(100.0 * SUM(p.vital_status = 'Deceased')
+             / (SUM(p.overall_survival_months) / 12.0), 2) AS deaths_per_100_py
+FROM patients p
+JOIN samples s USING (patient_id)
+JOIN v_sample_gene_status tp53 ON tp53.sample_id = s.sample_id AND tp53.gene_symbol = 'TP53'
+GROUP BY s.cancer_type, tp53_status
+ORDER BY s.cancer_type, tp53_status;
+cancer_type  tp53_status     n    deaths  deaths_per_100_py
+-----------  --------------  ---  ------  -----------------
+BRCA         TP53 mutant     76   46      17.97            
+BRCA         TP53 wild-type  144  76      15.35            
+COAD         TP53 mutant     94   56      22.01            
+COAD         TP53 wild-type  56   21      11.0             
+LUAD         TP53 mutant     71   52      31.56            
+LUAD         TP53 wild-type  109  62      22.09            
+SKCM         TP53 mutant     24   15      19.36            
+SKCM         TP53 wild-type  86   48      18.01            
+
+-- 3. Kaplan-Meier survival estimate by TP53 status, written in pure SQL.
+--    S(t) = product over event times t_i <= t of (1 - d_i / n_i)
+--    The running product is computed as EXP(SUM(LN(.))) in a window.
+DROP VIEW IF EXISTS v_km_tp53;
+CREATE VIEW v_km_tp53 AS
+WITH cohort AS (
+    SELECT CASE tp53.is_mutated WHEN 1 THEN 'TP53 mutant' ELSE 'TP53 wild-type' END AS grp,
+           p.overall_survival_months AS t,
+           (p.vital_status = 'Deceased') AS event
+    FROM patients p
+    JOIN samples s USING (patient_id)
+    JOIN v_sample_gene_status tp53 ON tp53.sample_id = s.sample_id AND tp53.gene_symbol = 'TP53'
+),
+times AS (                                   -- deaths and censorings at each time
+    SELECT grp, t, SUM(event) AS d, COUNT(*) AS removed
+    FROM cohort
+    GROUP BY grp, t
+),
+at_risk AS (                                 -- n_i = subjects still followed just before t
+    SELECT grp, t, d,
+           SUM(removed) OVER (PARTITION BY grp ORDER BY t DESC) AS n_at_risk
+    FROM times
+)
+SELECT grp, t AS months, d AS deaths, n_at_risk,
+       ROUND(EXP(SUM(LN(1.0 - 1.0 * d / n_at_risk))
+                 OVER (PARTITION BY grp ORDER BY t)), 4) AS survival
+FROM at_risk
+WHERE d > 0;
+
+-- 3a. Survival at landmark time points (1, 3, 5 years) and median survival
+WITH landmarks(months) AS (VALUES (12), (36), (60))
+SELECT k.grp, l.months AS landmark_months,
+       (SELECT survival FROM v_km_tp53 x
+         WHERE x.grp = k.grp AND x.months <= l.months
+         ORDER BY x.months DESC LIMIT 1) AS survival_probability
+FROM (SELECT DISTINCT grp FROM v_km_tp53) k
+CROSS JOIN landmarks l
+ORDER BY k.grp, l.months;
+grp             landmark_months  survival_probability
+--------------  ---------------  --------------------
+TP53 mutant     12               0.7762              
+TP53 mutant     36               0.4975              
+TP53 mutant     60               0.3459              
+TP53 wild-type  12               0.8268              
+TP53 wild-type  36               0.6013              
+TP53 wild-type  60               0.4098              
+
+SELECT grp, MIN(months) AS median_os_months
+FROM v_km_tp53
+WHERE survival <= 0.5
+GROUP BY grp;
+grp             median_os_months
+--------------  ----------------
+TP53 mutant     36.0            
+TP53 wild-type  47.5            
+
+-- 4. Stage remains the strongest prognostic factor
+SELECT p.stage,
+       COUNT(*) AS n,
+       ROUND(100.0 * SUM(p.vital_status = 'Deceased')
+             / (SUM(p.overall_survival_months) / 12.0), 2) AS deaths_per_100_py
+FROM patients p
+GROUP BY p.stage
+ORDER BY p.stage;
+stage  n    deaths_per_100_py
+-----  ---  -----------------
+I      160  8.6              
+II     229  13.74            
+III    166  28.09            
+IV     105  70.91            

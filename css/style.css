@@ -59,6 +59,10 @@ h1, h2, h3 { font-family: Fraunces, Georgia, serif; line-height: 1.15; margin: 0
 .nav nav { display: flex; gap: 22px; font-size: 15px; font-weight: 500; }
 .nav nav a { text-decoration: none; color: var(--muted); }
 .nav nav a:hover { color: var(--ink); }
+.lang-btn { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--line); background: var(--surface); border-radius: 99px; cursor: pointer; font: 600 12px "JetBrains Mono", monospace; }
+.lang-btn span { padding: 7px 10px; border-radius: 99px; color: var(--muted); transition: background .2s, color .2s; }
+.lang-btn:hover { border-color: var(--brand); }
+:root:not([lang="de"]) .lang-btn [lang="en"], :root[lang="de"] .lang-btn [lang="de"] { background: var(--brand); color: var(--bg); }
 .icon-btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 18px; }
 .icon-btn:hover { border-color: var(--brand); }
 
@@ -125,6 +129,38 @@ h1 { font-size: clamp(38px, 6vw, 66px); font-weight: 800; letter-spacing: -.02em
 .results li { margin-bottom: 6px; opacity: 0; transform: translateY(6px); animation: rise .4s forwards; }
 .rows { margin: 12px 0 0; color: #7f8da6; font-size: 13px; }
 @keyframes rise { to { opacity: 1; transform: none; } }
+
+/* projects */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 20px; }
+.proj { cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
+.proj:hover, .proj:focus-within { transform: translateY(-5px); box-shadow: var(--shadow); }
+.proj .thumb { height: 150px; display: grid; place-items: center; font-size: 54px; background: linear-gradient(135deg, #1f4e8c, #8a5cc2); }
+.proj .body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.proj h3 { font-size: 21px; }
+.proj p { margin: 0; font-size: 15px; line-height: 1.5; }
+.proj .desc { color: var(--muted); }
+.proj .result { font-weight: 500; border-left: 3px solid var(--good); padding-left: 10px; }
+.proj .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+.proj .tags span { font: 400 12px "JetBrains Mono", monospace; background: var(--brand-soft); color: var(--brand); padding: 2px 9px; border-radius: 6px; }
+.proj .links { display: flex; flex-wrap: wrap; gap: 16px; font-weight: 600; font-size: 14px; }
+.proj .more { font: inherit; padding: 0; border: 0; background: none; cursor: pointer; color: var(--accent); }
+.proj .links a { color: var(--brand); }
+
+.proj-dialog { width: min(1100px, calc(100% - 32px)); max-height: calc(100% - 48px); padding: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); box-shadow: var(--shadow); }
+.proj-dialog::backdrop { background: rgba(13, 18, 27, .6); }
+.proj-dialog header { position: sticky; top: 0; z-index: 1; display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; padding: 22px 24px 16px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.proj-dialog header > div { min-width: 0; }
+.proj-dialog h3 { font-size: 24px; margin: 0 0 6px; }
+.proj-dialog .dialog-links { margin-top: 8px; font-weight: 600; }
+.proj-dialog .dialog-links a { color: var(--accent); }
+.proj-dialog header p { margin: 0; color: var(--muted); font-size: 15px; max-width: 70ch; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); align-items: start; gap: 20px; padding: 24px; }
+.gallery figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.gallery img { display: block; width: 100%; height: auto; background: #fff; }
+@media (max-width: 560px) { .proj-dialog header { padding: 18px 16px 12px; } .gallery { padding: 16px; } }
+.gallery figcaption { padding: 12px 16px 16px; font-size: 15px; color: var(--muted); line-height: 1.5; }
+.gallery figcaption strong { color: var(--ink); }
+body.modal-open { overflow: hidden; }
 
 /* timeline */
 .timeline { list-style: none; margin: 28px 0 40px; padding: 0 0 0 26px; border-left: 3px dashed var(--line); }

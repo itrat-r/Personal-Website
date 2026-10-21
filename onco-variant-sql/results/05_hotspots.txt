@@ -1,0 +1,97 @@
+-- =====================================================================
+-- 05_hotspots.sql
+-- Q: Which exact mutations recur across patients (actionable hotspots)?
+-- =====================================================================
+
+-- 1. Recurrent protein changes seen in >= 5 distinct samples,
+--    with the cancer types they occur in
+SELECT v.gene_symbol,
+       v.protein_change,
+       v.chromosome || ':' || v.position || ' ' || v.ref_allele || '>' || v.alt_allele AS locus,
+       COUNT(DISTINCT v.sample_id)          AS n_samples,
+       GROUP_CONCAT(DISTINCT s.cancer_type) AS cancer_types
+FROM v_variants_clean v
+JOIN samples s USING (sample_id)
+WHERE v.is_nonsynonymous = 1
+GROUP BY v.gene_symbol, v.protein_change, locus
+HAVING COUNT(DISTINCT v.sample_id) >= 5
+ORDER BY n_samples DESC;
+gene_symbol  protein_change  locus            n_samples  cancer_types       
+-----------  --------------  ---------------  ---------  -------------------
+BRAF         p.V600E         7:140721127 C>T  67         LUAD,COAD,SKCM     
+PIK3CA       p.H1047R        3:179151255 C>A  33         BRCA,COAD          
+KRAS         p.G12D          12:25205282 C>A  32         LUAD,COAD          
+KRAS         p.G12V          12:25205282 A>T  23         LUAD,COAD          
+PIK3CA       p.E545K         3:179149749 T>G  17         BRCA,COAD          
+APC          p.E1309fs       5:112711425 A>G  14         COAD               
+APC          p.R1450*        5:112711848 C>A  14         COAD               
+TP53         p.R273C         17:7662598 C>G   14         BRCA,LUAD,COAD,SKCM
+TP53         p.R273H         17:7662598 G>T   13         BRCA,LUAD,COAD,SKCM
+TP53         p.R175H         17:7662304 C>A   12         LUAD,COAD,SKCM     
+TP53         p.R248Q         17:7662523 T>G   12         BRCA,LUAD,COAD,SKCM
+TP53         p.R248W         17:7662523 A>T   11         BRCA,LUAD,COAD     
+PIK3CA       p.E542K         3:179149740 G>A  10         BRCA,COAD          
+EGFR         p.L858R         7:55021591 G>A   9          LUAD               
+KRAS         p.G12C          12:25205282 C>G  9          LUAD,COAD          
+NRAS         p.Q61R          1:114704652 C>A  9          COAD,SKCM          
+KRAS         p.G13D          12:25205285 A>C  8          LUAD,COAD          
+EGFR         p.E746_A750del  7:55021255 C>T   7          LUAD               
+NRAS         p.Q61K          1:114704652 T>G  5          COAD,SKCM          
+TP53         p.G245S         17:7662514 C>G   5          BRCA,LUAD,COAD     
+
+-- 2. How concentrated are each oncogene's mutations at its top hotspot?
+--    (high % = classic activating oncogene; genes whose most frequent
+--    change occurs < 3 times have no hotspot and are left out)
+WITH counts AS (
+    SELECT gene_symbol, protein_change, COUNT(*) AS n
+    FROM v_variants_clean
+    WHERE is_nonsynonymous = 1
+    GROUP BY gene_symbol, protein_change
+),
+ranked AS (
+    SELECT *,
+           SUM(n)       OVER (PARTITION BY gene_symbol)                  AS gene_total,
+           ROW_NUMBER() OVER (PARTITION BY gene_symbol ORDER BY n DESC)  AS rn
+    FROM counts
+)
+SELECT r.gene_symbol, g.gene_role, r.protein_change AS top_hotspot,
+       r.n AS hotspot_n, r.gene_total,
+       ROUND(100.0 * r.n / r.gene_total, 1) AS pct_at_top_hotspot
+FROM ranked r
+JOIN genes g USING (gene_symbol)
+WHERE r.rn = 1 AND r.gene_total >= 10 AND r.n >= 3
+ORDER BY pct_at_top_hotspot DESC;
+gene_symbol  gene_role  top_hotspot  hotspot_n  gene_total  pct_at_top_hotspot
+-----------  ---------  -----------  ---------  ----------  ------------------
+BRAF         Oncogene   p.V600E      67         86          77.9              
+NRAS         Oncogene   p.Q61R       9          27          33.3              
+KRAS         Oncogene   p.G12D       32         112         28.6              
+PIK3CA       Oncogene   p.H1047R     33         120         27.5              
+EGFR         Oncogene   p.L858R      9          36          25.0              
+APC          TSG        p.E1309fs    14         158         8.9               
+TP53         TSG        p.R273C      14         267         5.2               
+
+-- 3. KRAS allele spectrum by cancer type (G12C is targetable by sotorasib)
+SELECT s.cancer_type,
+       v.protein_change,
+       COUNT(*) AS n,
+       ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (PARTITION BY s.cancer_type), 1)
+           AS pct_of_kras_in_type
+FROM v_variants_clean v
+JOIN samples s USING (sample_id)
+WHERE v.gene_symbol = 'KRAS' AND v.protein_change IN
+      ('p.G12D', 'p.G12V', 'p.G12C', 'p.G13D', 'p.Q61H')
+GROUP BY s.cancer_type, v.protein_change
+ORDER BY s.cancer_type, n DESC;
+cancer_type  protein_change  n   pct_of_kras_in_type
+-----------  --------------  --  -------------------
+COAD         p.G12D          16  38.1               
+COAD         p.G12V          15  35.7               
+COAD         p.G12C          5   11.9               
+COAD         p.G13D          4   9.5                
+COAD         p.Q61H          2   4.8                
+LUAD         p.G12D          16  48.5               
+LUAD         p.G12V          8   24.2               
+LUAD         p.G12C          4   12.1               
+LUAD         p.G13D          4   12.1               
+LUAD         p.Q61H          1   3.0                

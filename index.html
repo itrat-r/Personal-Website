@@ -18,33 +18,35 @@
   </script>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
+  <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
 
   <header class="nav">
     <a href="#top" class="logo" aria-label="Itrat Rubab, home">IR<span>.</span></a>
     <nav aria-label="Main">
-      <a href="#impact">Impact</a>
-      <a href="#experience">Experience</a>
-      <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
+      <a href="#impact" data-i18n="nav.impact">Impact</a>
+      <a href="#projects" data-i18n="nav.projects">Projects</a>
+      <a href="#experience" data-i18n="nav.experience">Experience</a>
+      <a href="#skills" data-i18n="nav.skills">Skills</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
     </nav>
-    <button id="theme" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+    <button id="lang" class="lang-btn" type="button" aria-label="Sprache: Deutsch / Language: English" title="English / Deutsch"><span lang="en">EN</span><span lang="de">DE</span></button>
+    <button id="theme" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode" data-i18n-label="theme">◐</button>
   </header>
 
   <main id="main">
     <!-- HERO -->
     <section class="hero" id="top">
       <div class="hero-text">
-        <p class="eyebrow"><span class="dot"></span> Open to data analyst roles · Germany</p>
-        <h1>Hi, I'm <span class="hl">Itrat</span>.<br>I turn messy data into <span class="typed-wrap"><span id="typed"></span><span class="caret"></span></span></h1>
-        <p class="lead">Data analyst with 3.5 years in data integration and pipeline development, backed by an M.Sc. in Bioinformatics. I build the ETL, write the queries and ship the dashboards, so teams stop copy-pasting into Excel.</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow"><span class="dot"></span> Open to data analyst roles · Germany</p>
+        <h1><span data-i18n="hero.hi">Hi, I'm <span class="hl">Itrat</span>.</span><br><span data-i18n="hero.turn">I turn messy data into</span> <span class="typed-wrap"><span id="typed"></span><span class="caret"></span></span></h1>
+        <p class="lead" data-i18n="hero.lead">Data analyst with 3.5 years in data integration and pipeline development, backed by an M.Sc. in Bioinformatics. I build the ETL, write the queries and ship the dashboards, so teams stop copy-pasting into Excel.</p>
         <div class="cta">
-          <a class="btn primary" href="#experience">See my experience →</a>
-          <a class="btn" href="assets/Itrat_Rubab_CV.pdf" download>Download CV</a>
+          <a class="btn primary" href="#projects" data-i18n="hero.cta">See my projects →</a>
+          <a class="btn" href="assets/Itrat_Rubab_CV.pdf" download data-i18n="hero.cv">Download CV</a>
         </div>
         <ul class="badges">
-          <li>🇩🇪 Permanent Resident</li>
-          <li>English · fluent</li>
+          <li data-i18n="hero.pr">🇩🇪 Permanent Resident</li>
+          <li data-i18n="hero.en">English · fluent</li>
           <li>Deutsch · B2</li>
         </ul>
       </div>
@@ -57,9 +59,9 @@
             <path id="p3" d="M180 274 V332"/>
           </defs>
           <g class="node" transform="translate(40,10)"><rect width="280" height="52" rx="14"/><text x="140" y="32">OneDrive · APIs · on-prem</text></g>
-          <g class="node accent" transform="translate(40,120)"><rect width="280" height="48" rx="14"/><text x="140" y="30">n8n · scheduled ETL</text></g>
-          <g class="node" transform="translate(40,226)"><rect width="280" height="48" rx="14"/><text x="140" y="30">AWS S3 · encrypted</text></g>
-          <g class="node" transform="translate(40,332)"><rect width="280" height="48" rx="14"/><text x="140" y="30">MongoDB · aggregations</text></g>
+          <g class="node accent" transform="translate(40,120)"><rect width="280" height="48" rx="14"/><text x="140" y="30" data-i18n="pipe.etl">n8n · scheduled ETL</text></g>
+          <g class="node" transform="translate(40,226)"><rect width="280" height="48" rx="14"/><text x="140" y="30" data-i18n="pipe.s3">AWS S3 · encrypted</text></g>
+          <g class="node" transform="translate(40,332)"><rect width="280" height="48" rx="14"/><text x="140" y="30" data-i18n="pipe.mongo">MongoDB · aggregations</text></g>
           <use href="#p1" class="wire"/><use href="#p2" class="wire"/><use href="#p3" class="wire"/>
           <g class="flow">
             <circle r="5"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
@@ -67,20 +69,20 @@
             <circle r="5"><animateMotion dur="1.6s" begin="1s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
           </g>
         </svg>
-        <figcaption>The shape of most things I build: <em>sources → pipeline → storage → insight</em>.</figcaption>
+        <figcaption data-i18n="pipe.caption">The shape of most things I build: <em>sources → pipeline → storage → insight</em>.</figcaption>
       </figure>
     </section>
 
     <!-- IMPACT -->
     <section id="impact" class="section">
-      <h2 class="sec-title"><span>01</span> Impact, in numbers</h2>
+      <h2 class="sec-title" data-i18n="impact.title"><span>01</span> Impact, in numbers</h2>
       <div class="stats">
-        <div class="stat"><b data-count="3.5" data-dec="1">0</b><i>years</i><p>in data integration &amp; pipeline development</p></div>
-        <div class="stat"><b data-count="500" data-suffix="+">0</b><p>daily uploads processed with MongoDB aggregation pipelines</p></div>
-        <div class="stat"><b data-count="70" data-suffix="%">0</b><p>fewer workflow failures after translating business needs into integration requirements</p></div>
-        <div class="stat"><b data-count="5" data-suffix=" h">0</b><p>of manual data handling saved every week by automated ETL</p></div>
-        <div class="stat"><b data-count="60" data-suffix="%">0</b><p>higher feature adoption after usability and A/B testing</p></div>
-        <div class="stat"><b data-count="50" data-suffix="+">0</b><p>participants in usability tests that shaped design decisions</p></div>
+        <div class="stat"><b data-count="3.5" data-dec="1">0</b><i data-i18n="impact.years">years</i><p data-i18n="impact.s1">in data integration &amp; pipeline development</p></div>
+        <div class="stat"><b data-count="500" data-suffix="+">0</b><p data-i18n="impact.s2">daily uploads processed with MongoDB aggregation pipelines</p></div>
+        <div class="stat"><b data-count="70" data-suffix="%">0</b><p data-i18n="impact.s3">fewer workflow failures after translating business needs into integration requirements</p></div>
+        <div class="stat"><b data-count="5" data-suffix=" h">0</b><p data-i18n="impact.s4">of manual data handling saved every week by automated ETL</p></div>
+        <div class="stat"><b data-count="60" data-suffix="%">0</b><p data-i18n="impact.s5">higher feature adoption after usability and A/B testing</p></div>
+        <div class="stat"><b data-count="50" data-suffix="+">0</b><p data-i18n="impact.s6">participants in usability tests that shaped design decisions</p></div>
       </div>
 
       <div class="console" id="console">
@@ -89,20 +91,82 @@
 <span class="k">FROM</span>   experience
 <span class="k">WHERE</span>  company = <span class="s">'Contexxt.ai'</span>
 <span class="k">ORDER BY</span> impact <span class="k">DESC</span>;</code></pre>
-        <button class="btn small" id="run">▶ Run query</button>
+        <button class="btn small" id="run" data-i18n="console.run">▶ Run query</button>
         <ol class="results" id="results" hidden>
-          <li>Scheduled ETL (n8n) from OneDrive &amp; on-prem into encrypted AWS S3 for 3 enterprise clients</li>
-          <li>MongoDB pipelines keeping 500+ daily uploads clean and queryable</li>
-          <li>React + MUI dashboards replacing manual Excel reports with live KPIs</li>
-          <li>70% fewer workflow failures through tighter requirements with product &amp; sales</li>
+          <li data-i18n="console.r1">Scheduled ETL (n8n) from OneDrive &amp; on-prem into encrypted AWS S3 for 3 enterprise clients</li>
+          <li data-i18n="console.r2">MongoDB pipelines keeping 500+ daily uploads clean and queryable</li>
+          <li data-i18n="console.r3">React + MUI dashboards replacing manual Excel reports with live KPIs</li>
+          <li data-i18n="console.r4">70% fewer workflow failures through tighter requirements with product &amp; sales</li>
         </ol>
-        <p class="rows" id="rows" hidden>4 rows returned in 0.02 s</p>
+        <p class="rows" id="rows" hidden data-i18n="console.rows">4 rows returned in 0.02 s</p>
       </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <h2 class="sec-title" data-i18n="projects.title"><span>02</span> Data projects</h2>
+      <p class="sec-sub" data-i18n="projects.sub">Hands-on work I can walk you through. Click a card to see the results.</p>
+      <div class="grid">
+        <article class="proj" data-open="onco">
+          <div class="thumb" aria-hidden="true">🧬</div>
+          <div class="body">
+            <h3>OncoVariant SQL</h3>
+            <p class="desc" data-i18n="onco.desc">Somatic mutation landscape of a 660-patient pan-cancer cohort: schema design, ETL, QC and analysis in SQL, visualised in Python.</p>
+            <p class="result" data-i18n="onco.result">BRAF V600E, MSI-high TMB and a Kaplan–Meier survival curve, all computed in SQL.</p>
+            <div class="tags"><span>SQL</span><span>SQLite</span><span>Python</span><span>pandas</span><span>matplotlib</span></div>
+            <div class="links">
+              <button type="button" class="more" aria-haspopup="dialog" data-i18n="onco.more">View results →</button>
+              <a href="https://github.com/itrat-r/Onco-variant-sql" target="_blank" rel="noopener" data-i18n="onco.code">Code on GitHub ↗</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <dialog id="onco" class="proj-dialog" aria-labelledby="onco-title">
+        <header>
+          <div>
+            <h3 id="onco-title">OncoVariant SQL</h3>
+            <p data-i18n="onco.intro">660 patients · 4 cancer types (breast, lung, colorectal, melanoma) · 2,590 variant calls. Queries in SQLite, charts in Python (pandas + matplotlib) straight from the database. Synthetic data built from published driver frequencies and real hotspots.</p>
+            <p class="dialog-links"><a href="https://github.com/itrat-r/Onco-variant-sql" target="_blank" rel="noopener" data-i18n="onco.codeLong">View the code on GitHub ↗</a></p>
+          </div>
+          <button type="button" class="icon-btn" data-close aria-label="Close" data-i18n-label="close">✕</button>
+        </header>
+        <div class="gallery">
+          <figure>
+            <img src="assets/onco/01_qc_funnel.png" alt="Variant QC funnel" data-i18n-alt="onco.alt1" loading="lazy" width="1600" height="1000">
+            <figcaption data-i18n="onco.f1"><strong>Variant QC funnel.</strong> 394 low-depth, low-VAF calls (mean 11× depth, 2.5% VAF) and 35 pipeline duplicates are removed before analysis.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/onco/02_driver_heatmap.png" alt="Driver landscape" data-i18n-alt="onco.alt2" loading="lazy" width="1600" height="1000">
+            <figcaption data-i18n="onco.f2"><strong>Driver landscape.</strong> APC in 83% of colorectal tumours, BRAF in 55% of melanomas, PIK3CA and TP53 in about a third of breast cancers.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/onco/03_hotspots.png" alt="Recurrent hotspots" data-i18n-alt="onco.alt3" loading="lazy" width="1600" height="1000">
+            <figcaption data-i18n="onco.f3"><strong>Recurrent hotspots.</strong> BRAF V600E alone accounts for 78% of all BRAF mutations, the signature of an activating oncogene.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/onco/04_tmb.png" alt="Tumour mutational burden" data-i18n-alt="onco.alt4" loading="lazy" width="1600" height="1000">
+            <figcaption data-i18n="onco.f4"><strong>Tumour mutational burden.</strong> MSI-high colorectal tumours average 29.5 mut/Mb vs 3.1 for MSS, and 96% are TMB-high: the group most likely to respond to immunotherapy.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/onco/05_mutual_exclusivity.png" alt="Mutual exclusivity" data-i18n-alt="onco.alt5" loading="lazy" width="1600" height="1000">
+            <figcaption data-i18n="onco.f5"><strong>Mutual exclusivity.</strong> BRAF–NRAS, EGFR–KRAS and PIK3CA–PTEN are never co-mutated: both genes sit in the same pathway, so one hit is enough.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/onco/06_survival_tp53.png" alt="Survival by TP53 status" data-i18n-alt="onco.alt6" loading="lazy" width="1600" height="1000">
+            <figcaption data-i18n="onco.f6"><strong>Survival by TP53 status.</strong> Kaplan–Meier estimate written in pure SQL: median overall survival 36.0 months for TP53-mutant vs 47.5 for wild-type.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/onco/07_smoking_luad.png" alt="Smoking and lung cancer" data-i18n-alt="onco.alt7" loading="lazy" width="1600" height="1000">
+            <figcaption data-i18n="onco.f7"><strong>Smoking and lung cancer.</strong> EGFR mutations in 36% of never-smokers vs 8% of smokers; KRAS shows the opposite pattern.</figcaption>
+          </figure>
+        </div>
+      </dialog>
     </section>
 
     <!-- EXPERIENCE -->
     <section id="experience" class="section">
-      <h2 class="sec-title"><span>02</span> Experience</h2>
+      <h2 class="sec-title" data-i18n="exp.title"><span>03</span> Experience</h2>
       <ol class="timeline">
         <li>
           <div class="when">03/2023 – 12/2025</div>
@@ -110,10 +174,10 @@
             <h3>Data Analyst | Software Developer</h3>
             <p class="org">Contexxt.ai · Saarbrücken</p>
             <ul>
-              <li>Designed and automated scheduled ETL pipelines (n8n) integrating cloud (OneDrive) and on-premise sources into AWS S3 for 3 enterprise clients, with encryption, saving ~5 hours per week.</li>
-              <li>Wrote MongoDB queries and aggregation pipelines for 500+ daily uploads, powering product features and internal reports.</li>
-              <li>Built dashboards in TypeScript, React and MUI that turned raw datasets into usage metrics and KPIs, replacing manual Excel reports.</li>
-              <li>Partnered with product and sales to turn business needs into integration requirements, reducing workflow failures by 70%.</li>
+              <li data-i18n="exp.c1">Designed and automated scheduled ETL pipelines (n8n) integrating cloud (OneDrive) and on-premise sources into AWS S3 for 3 enterprise clients, with encryption, saving ~5 hours per week.</li>
+              <li data-i18n="exp.c2">Wrote MongoDB queries and aggregation pipelines for 500+ daily uploads, powering product features and internal reports.</li>
+              <li data-i18n="exp.c3">Built dashboards in TypeScript, React and MUI that turned raw datasets into usage metrics and KPIs, replacing manual Excel reports.</li>
+              <li data-i18n="exp.c4">Partnered with product and sales to turn business needs into integration requirements, reducing workflow failures by 70%.</li>
             </ul>
           </div>
         </li>
@@ -123,61 +187,61 @@
             <h3>Front-end Developer | UI-UX Designer</h3>
             <p class="org">IT Inkubator GmbH · Saarbrücken</p>
             <ul>
-              <li>Designed and built a cross-platform health app for an enterprise client (React Native, Ionic, Figma) in an agile team.</li>
-              <li>Ran usability tests with 50+ participants and A/B tested the diet plan feature, improving feature adoption by 60%.</li>
+              <li data-i18n="exp.i1">Designed and built a cross-platform health app for an enterprise client (React Native, Ionic, Figma) in an agile team.</li>
+              <li data-i18n="exp.i2">Ran usability tests with 50+ participants and A/B tested the diet plan feature, improving feature adoption by 60%.</li>
             </ul>
           </div>
         </li>
         <li>
           <div class="when">03/2021 – 02/2022</div>
           <div class="card">
-            <h3>Research Assistant</h3>
-            <p class="org">Bonn University · Bonn</p>
+            <h3 data-i18n="exp.ra">Research Assistant</h3>
+            <p class="org" data-i18n="exp.bonn">Bonn University · Bonn</p>
             <ul>
-              <li>Ran experiments with 30+ participants to collect and annotate human movement data for training detection models.</li>
-              <li>Built Python (Pandas) cleaning pipelines to turn 1,000+ raw movement images into model-ready datasets.</li>
+              <li data-i18n="exp.b1">Ran experiments with 30+ participants to collect and annotate human movement data for training detection models.</li>
+              <li data-i18n="exp.b2">Built Python (Pandas) cleaning pipelines to turn 1,000+ raw movement images into model-ready datasets.</li>
             </ul>
           </div>
         </li>
         <li>
           <div class="when">04/2017 – 02/2021</div>
           <div class="card">
-            <h3>Student Research Assistant</h3>
-            <p class="org">Max Planck Institute for Informatics · Saarbrücken</p>
+            <h3 data-i18n="exp.sra">Student Research Assistant</h3>
+            <p class="org" data-i18n="exp.mpi">Max Planck Institute for Informatics · Saarbrücken</p>
             <ul>
-              <li>Developed interactive visualization tools and scientific web apps (JavaScript, React, Python) so researchers could explore computer vision datasets.</li>
+              <li data-i18n="exp.m1">Developed interactive visualization tools and scientific web apps (JavaScript, React, Python) so researchers could explore computer vision datasets.</li>
             </ul>
           </div>
         </li>
       </ol>
 
       <div class="edu">
-        <div class="card"><h3>M.Sc. Bioinformatics</h3><p class="org">Saarland University, Germany · 2016 – 2021</p></div>
-        <div class="card"><h3>B.Sc. Bioinformatics</h3><p class="org">COMSATS University, Pakistan · 2011 – 2015</p></div>
-        <div class="card"><h3>Google Data Analytics Certificate</h3><p class="org">Coursera · in progress, expected 12/2026 · SQL (BigQuery), Tableau, R</p></div>
-        <div class="card"><h3>Deutsch für Beruf B2</h3><p class="org">01/2026 – 08/2026 · business German</p></div>
+        <div class="card"><h3 data-i18n="edu.msc">M.Sc. Bioinformatics</h3><p class="org" data-i18n="edu.uds">Saarland University, Germany · 2016 – 2021</p></div>
+        <div class="card"><h3 data-i18n="edu.bsc">B.Sc. Bioinformatics</h3><p class="org">COMSATS University, Pakistan · 2011 – 2015</p></div>
+        <div class="card"><h3>Google Data Analytics Certificate</h3><p class="org" data-i18n="edu.google">Coursera · in progress, expected 12/2026 · SQL (BigQuery), Tableau, R</p></div>
+        <div class="card"><h3>Deutsch für Beruf B2</h3><p class="org" data-i18n="edu.german">01/2026 – 08/2026 · business German</p></div>
       </div>
     </section>
 
     <!-- SKILLS -->
     <section id="skills" class="section">
-      <h2 class="sec-title"><span>03</span> Toolbox</h2>
+      <h2 class="sec-title" data-i18n="skills.title"><span>04</span> Toolbox</h2>
       <div class="skills">
-        <div><h3>Data engineering &amp; analytics</h3>
-          <p class="chips"><span>Python (Pandas)</span><span>SQL</span><span>Excel</span><span>AWS S3</span><span>MongoDB / NoSQL</span><span>A/B testing</span><span>REST APIs</span><span>n8n</span></p></div>
-        <div><h3>BI &amp; visualization</h3>
-          <p class="chips"><span>Power BI</span><span>Tableau</span><span>Dashboard development</span></p></div>
-        <div><h3>Development &amp; process</h3>
+        <div><h3 data-i18n="skills.de">Data engineering &amp; analytics</h3>
+          <p class="chips"><span>Python (Pandas)</span><span>SQL</span><span>Excel</span><span>AWS S3</span><span>MongoDB / NoSQL</span><span data-i18n="skills.ab">A/B testing</span><span>REST APIs</span><span>n8n</span></p></div>
+        <div><h3 data-i18n="skills.bi">BI &amp; visualization</h3>
+          <p class="chips"><span>Power BI</span><span>Tableau</span><span data-i18n="skills.dash">Dashboard development</span></p></div>
+        <div><h3 data-i18n="skills.dev">Development &amp; process</h3>
           <p class="chips"><span>TypeScript</span><span>JavaScript</span><span>React</span><span>Node.js</span><span>Git</span><span>GitLab</span></p></div>
-        <div><h3>Languages</h3>
-          <p class="chips"><span>English (fluent)</span><span>German (B2)</span></p></div>
+        <div><h3 data-i18n="skills.lang">Languages</h3>
+          <p class="chips"><span data-i18n="skills.en">English (fluent)</span><span data-i18n="skills.deu">German (B2)</span></p></div>
       </div>
     </section>
 
     <!-- CONTACT -->
     <section id="contact" class="section contact">
-      <h2>Have a data problem that needs a pipeline?</h2>
-      <p>Let's talk. I reply fast, in English or German.</p>
+      <h2 data-i18n="contact.title">Have a data problem that needs a pipeline?</h2>
+      <p data-i18n="contact.sub">Let's talk. I reply fast, in English or German.</p>
       <div class="cta center">
         <a class="btn primary" href="mailto:itrat.r16@gmail.com">itrat.r16@gmail.com</a>
         <a class="btn" href="https://linkedin.com/in/itratrubab" target="_blank" rel="noopener">LinkedIn</a>
@@ -187,9 +251,10 @@
   </main>
 
   <footer>
-    <p>© <span id="year"></span> Itrat Rubab · Built with plain HTML, CSS &amp; JS · Hosted on GitHub Pages</p>
+    <p>© <span id="year"></span> Itrat Rubab · <span data-i18n="footer">Built with plain HTML, CSS &amp; JS · Hosted on GitHub Pages</span></p>
   </footer>
 
+  <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

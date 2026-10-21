@@ -1,0 +1,137 @@
+-- =====================================================================
+-- 04_mutation_landscape.sql
+-- Q: Which genes drive each cancer type, and how mutated are tumours?
+-- =====================================================================
+
+-- 1. Top 5 most frequently mutated genes per cancer type
+--    (% of samples with >=1 non-synonymous mutation; passenger genes excluded)
+WITH freq AS (
+    SELECT sg.cancer_type, sg.gene_symbol, g.gene_role,
+           SUM(sg.is_mutated)                        AS n_mutated,
+           COUNT(*)                                  AS n_samples,
+           ROUND(100.0 * AVG(sg.is_mutated), 1)      AS pct_mutated
+    FROM v_sample_gene_status sg
+    JOIN genes g USING (gene_symbol)
+    WHERE g.gene_role IN ('Oncogene', 'TSG')
+    GROUP BY sg.cancer_type, sg.gene_symbol
+),
+ranked AS (
+    SELECT *, DENSE_RANK() OVER (PARTITION BY cancer_type ORDER BY pct_mutated DESC) AS rnk
+    FROM freq
+)
+SELECT cancer_type, rnk, gene_symbol, gene_role, n_mutated, n_samples, pct_mutated
+FROM ranked
+WHERE rnk <= 5
+ORDER BY cancer_type, rnk;
+cancer_type  rnk  gene_symbol  gene_role  n_mutated  n_samples  pct_mutated
+-----------  ---  -----------  ---------  ---------  ---------  -----------
+BRCA         1    TP53         TSG        76         220        34.5       
+BRCA         2    PIK3CA       Oncogene   73         220        33.2       
+BRCA         3    GATA3        TSG        28         220        12.7       
+BRCA         4    CDH1         TSG        24         220        10.9       
+BRCA         5    ARID1A       TSG        13         220        5.9        
+COAD         1    APC          TSG        125        150        83.3       
+COAD         2    TP53         TSG        94         150        62.7       
+COAD         3    KRAS         Oncogene   59         150        39.3       
+COAD         4    PIK3CA       Oncogene   33         150        22.0       
+COAD         5    SMAD4        TSG        21         150        14.0       
+LUAD         1    TP53         TSG        71         180        39.4       
+LUAD         2    KRAS         Oncogene   52         180        28.9       
+LUAD         3    STK11        TSG        44         180        24.4       
+LUAD         4    KEAP1        TSG        37         180        20.6       
+LUAD         5    EGFR         Oncogene   24         180        13.3       
+SKCM         1    BRAF         Oncogene   60         110        54.5       
+SKCM         2    NF1          TSG        29         110        26.4       
+SKCM         3    TP53         TSG        24         110        21.8       
+SKCM         4    NRAS         Oncogene   18         110        16.4       
+SKCM         5    PTEN         TSG        12         110        10.9       
+
+-- 2. Oncogenes vs tumour suppressors: share of truncating mutations.
+--    TSGs are inactivated (truncating), oncogenes are activated (missense hotspots).
+SELECT g.gene_role,
+       COUNT(*)                                     AS n_mutations,
+       ROUND(100.0 * AVG(v.is_truncating), 1)       AS pct_truncating
+FROM v_variants_clean v
+JOIN genes g USING (gene_symbol)
+WHERE v.is_nonsynonymous = 1
+GROUP BY g.gene_role
+ORDER BY pct_truncating DESC;
+gene_role  n_mutations  pct_truncating
+---------  -----------  --------------
+TSG        763          49.4          
+Passenger  702          19.4          
+Oncogene   399          3.5           
+
+-- 3. Tumour mutational burden (TMB) per sample:
+--    non-synonymous mutations per megabase of sequenced coding sequence.
+--    Like clinical panels (e.g. FoundationOne CDx), known cancer genes are
+--    excluded: their mutations are positively selected and would inflate TMB.
+DROP VIEW IF EXISTS v_tmb;
+CREATE VIEW v_tmb AS
+WITH panel AS (
+    SELECT SUM(protein_length) * 3 / 1e6 AS tmb_region_mb
+    FROM genes
+    WHERE gene_role = 'Passenger'
+)
+SELECT s.sample_id, s.cancer_type, s.msi_status, p.smoking_status,
+       COUNT(v.variant_id)                                       AS n_nonsyn,
+       ROUND(COUNT(v.variant_id) / (SELECT tmb_region_mb FROM panel), 2) AS tmb_per_mb
+FROM samples s
+JOIN patients p USING (patient_id)
+LEFT JOIN (
+    SELECT cv.*
+    FROM v_variants_clean cv
+    JOIN genes g USING (gene_symbol)
+    WHERE cv.is_nonsynonymous = 1 AND g.gene_role = 'Passenger'
+) v ON v.sample_id = s.sample_id
+GROUP BY s.sample_id;
+
+-- 4. TMB distribution per cancer type (median + quartiles via NTILE / ROW_NUMBER)
+WITH ordered AS (
+    SELECT cancer_type, tmb_per_mb,
+           ROW_NUMBER() OVER (PARTITION BY cancer_type ORDER BY tmb_per_mb) AS rn,
+           COUNT(*)     OVER (PARTITION BY cancer_type)                    AS n
+    FROM v_tmb
+)
+SELECT cancer_type,
+       MAX(n)                                                       AS n_samples,
+       MAX(CASE WHEN rn = CAST(0.25 * n AS INT) + 1 THEN tmb_per_mb END) AS q1_tmb,
+       MAX(CASE WHEN rn = CAST(0.50 * n AS INT) + 1 THEN tmb_per_mb END) AS median_tmb,
+       MAX(CASE WHEN rn = CAST(0.75 * n AS INT) + 1 THEN tmb_per_mb END) AS q3_tmb,
+       MAX(tmb_per_mb)                                              AS max_tmb
+FROM ordered
+GROUP BY cancer_type
+ORDER BY median_tmb DESC;
+cancer_type  n_samples  q1_tmb  median_tmb  q3_tmb  max_tmb
+-----------  ---------  ------  ----------  ------  -------
+SKCM         110        5.37    10.73       16.1    32.19  
+LUAD         180        0.0     5.37        10.73   26.83  
+COAD         150        0.0     5.37        5.37    48.29  
+BRCA         220        0.0     0.0         0.0     10.73  
+
+-- 5. TMB-high tumours (>= 10 mut/Mb, the FDA pembrolizumab threshold)
+SELECT cancer_type,
+       COUNT(*)                                    AS n_samples,
+       SUM(tmb_per_mb >= 10)                       AS n_tmb_high,
+       ROUND(100.0 * AVG(tmb_per_mb >= 10), 1)     AS pct_tmb_high
+FROM v_tmb
+GROUP BY cancer_type
+ORDER BY pct_tmb_high DESC;
+cancer_type  n_samples  n_tmb_high  pct_tmb_high
+-----------  ---------  ----------  ------------
+SKCM         110        65          59.1        
+LUAD         180        67          37.2        
+COAD         150        36          24.0        
+BRCA         220        3           1.4         
+
+-- 6. Colorectal: microsatellite instability explains the TMB-high group
+SELECT msi_status, COUNT(*) AS n,
+       ROUND(AVG(tmb_per_mb), 1) AS mean_tmb,
+       ROUND(100.0 * AVG(tmb_per_mb >= 10), 1) AS pct_tmb_high
+FROM v_tmb
+WHERE cancer_type = 'COAD'
+GROUP BY msi_status;
+msi_status  n    mean_tmb  pct_tmb_high
+----------  ---  --------  ------------
+MSI-H       24   29.5      95.8        
+MSS         126  3.1       10.3        
